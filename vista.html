@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <title>EVALUACION</title>
+    
+    <h1>FORMULARIO DE INSCRIPCIONES</h1>
+    <hr>
+    <h2>DATOS PERSONALES</h2>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <script  type =" text/javascript">
+                function validar(f){
+                var ok = true;
+                var amg =" Debe completar la avalidación";
+                if (f.apellidos.value==""){
+                        alert("Debe ingresar el Apellido");
+                        ok=false;
+                }
+                if(ok==false) alert (amg)
+
+                return ok;
+
+            }    	 
+        </script>
+    <script>
+        function sololetras(e)
+        {
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toString();
+            letras ="abcdefgjhijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ";//todas las letras que quiero que se pueda ingresar
+            especiales =[8,13];//para el enter use los codigos especiales 
+            techa_especial = false;
+            for(var i in especiales){
+                if (key ==especiales[i]){
+                    techa_especial = true;
+                    break;
+                }
+            }
+            if(letras.indexOf(tecla)==-1 && !techa_especial)//condicional que verifiqye que si se a precionado otra letra
+            {
+                alert("Ingresar solo letras");//salta una alerta
+                return false;
+            }
+
+
+        }
+        function solonumeros(n)
+        {
+            if(window.event)
+            {
+                keynum =n.keyCode;
+            }
+            else{
+                keynum=n.which;
+            }
+            if((keynum>47&& keynum<58)|| keynum==8 || keynum ==13)
+            {
+                return true;
+            }
+            else {
+                alert("Ingresar solo numeros")
+                return false;
+            }
+        }
+    </script>
+</head>
+<!-- https://www.w3schools.com/-->
+
+<body>
+<form name="formjs" method = "post" action = "post.php" onsubmit="  return validar (this)">
+
+    Nombre : <input type="text" name="nombre"  onkeyup="javascript:this.value=this.value.toUpperCase();" required minlength="2" maxlength="50" onkeypress="return sololetras(event);">
+    <br><br>
+
+    Apellido Paterno : <input type = "text" name = "paterno"  onkeyup="javascript:this.value=this.value.toUpperCase();" required minlength="2" maxlength="50" onkeypress="return sololetras(event);">
+    <br><br>
+
+    Apellido Materno : <input type = "text" name = "materno"  onkeyup="javascript:this.value=this.value.toUpperCase();" required minlength="2" maxlength="50" onkeypress="return sololetras(event);">
+    <br><br>
+
+    Direccion : <input type = "text" name = "direccion" required min="0" max="100" onkeyup="javascript:this.value=this.value.toUpperCase();">
+    <br><br>
+    
+    Fecha de nacimiento : <input type="date" name="fechanaci" required placeholder="2024-07-22"
+    min="1900-01-01" max="2024-12-01">>
+    <br><br>
+
+    Telefono Fijo : <input type = "number" name = "telefono" onkeypress="solonumeros(event);">
+    <br><br>
+
+    Telefono Movil : <input type = "number" name = "celular" onkeypress="solonumeros(event);">
+    <br><br>
+
+    Lugar de nacimiento : <select name="ciudadnaci" onchange="crearlink(this.form)">
+        <option selected>COCHABAMBA</option>
+        <option value="SANTA CRUZ">SANTA CRUZ</option>
+        <option value="LA PAZ">LA PAZ</option>
+        <option value="ORURO">ORURO</option>
+        <option value="POTOSI">POTOSI</option>
+        <option value="CHUQUISACA">CHUQUISACA</option>
+        <option value="PANDO">PANDO</option>
+        <option value="TARIJA">TARIJA</option>
+        </select>
+    <br><br>
+
+    Pais : <select name="pais" onchange="crearlink(this.form)">
+        <option selected>BOLIVIA</option>
+        <option value="PANAMA">PANAMA</option>
+        <option value="PERU">PERU</option>
+        <option value="CHILE">CHILE</option>
+        <option value="ARGENTINA">ARGENTINA</option>
+        <option value="URUGUAY">URUGUAY</option>
+        <option value="PARAGUAY">PARAGUAY</option>
+        <option value="BRASIL">BRASIL</option>
+        <option value="COLOMBIA">COLOMBIA</option>
+        <option value="ECUADOR">ECUADOR</option>
+        </select>
+    <br><br>
+
+    Email : <input type = "email" name = "correo" required>
+    <br><br>
+
+    Carrera : <select name="carrera" onchange="crearlink(this.form)">
+        <option selected>DERECHO Y LEYES</option>
+        <option value="INGENIERIA EN SISTEMAS">INGENIERIA EN SISTEMAS</option>
+        <option value="MEDICINA">MEDICINA</option>
+        <option value="ADMINISTRACION PUBLICA">ADMINISTRACION PUBLICA</option>
+        <option value="COMERCIO Y RELACIONES INTERNACIONALES">COMERCIO Y RELACIONES INTERNACIONALES</option>
+        </select>
+    <br><br>
+    <input type = "submit" id="aceptar" value="ENVIAR">
+
+</form>
+   <script>
+        function doSearch () {
+            var data = new FormData(document.getElementById("mySearch"));
+            fetch("controlador.php", { method:"POST", body:data })
+            .then(res => res.json())
+            .then(res => {
+                let results = document.getElementById("results");
+                results.innerHTML = "";
+                if (res !== null) { 
+                for (let r of res) {
+                results.innerHTML += `<div>${r.id} - ${r.nombre} ${r.paterno}  ${r.materno}  ${r.direccion}  ${r.fechanaci}  ${r.telefono} ${r.pais}  ${r.carrera} </div>`;
+                }}
+            });
+            return false;
+            }
+   </script>
+</head>
+
+<body>
+    
+    <form id="mySearch" onsubmit="return doSearch()">
+        <input type="datospersonales" name="search" required>
+        <input type="submit" value="Buscar">
+    </form>
+
+    <div id="results"></div>
+</body>
+</html>
